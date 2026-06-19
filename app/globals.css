@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  @apply bg-white font-sans text-ink antialiased;
+}
+
+@layer components {
+  /* Pill-shaped “eyebrow” chip seen above every section heading */
+  .eyebrow {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-mint-light px-3.5 py-1.5 text-xs font-semibold tracking-wide text-deep;
+  }
+
+  .eyebrow-dark {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white;
+  }
+
+  /* Primary dark pill button with the circular arrow badge */
+  .btn-pill {
+    @apply inline-flex items-center gap-2 rounded-full bg-deep px-5 py-3 text-sm font-semibold text-white shadow-pill transition-transform duration-200 hover:bg-deep-700 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-dark;
+  }
+
+  .btn-pill-light {
+    @apply inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-deep shadow-pill transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white;
+  }
+
+  .arrow-badge {
+    @apply grid h-6 w-6 place-items-center rounded-full bg-teal-dark text-white;
+  }
+
+  .section-pad {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+}
