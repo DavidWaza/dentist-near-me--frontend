@@ -8,13 +8,20 @@ export const dynamic = "force-dynamic";
 
 /**
  * Reminder cron. Sends one reminder per appointment that starts within the
- * next REMINDER_WINDOW_HOURS and has not yet been reminded. Designed to be
- * called hourly (see vercel.json). The `reminder_sent_at` column guarantees
- * each patient is reminded exactly once.
+ * next REMINDER_WINDOW_HOURS and has not yet been reminded. The
+ * `reminder_sent_at` column guarantees each patient is reminded exactly once.
+ *
+ * DISABLED for Vercel Hobby deploy (hourly cron requires Pro). To re-enable:
+ * 1. Set CRON_REMINDERS_ENABLED = true below
+ * 2. Merge `vercel.cron.example.json` into `vercel.json`
+ * 3. Set CRON_SECRET in Vercel project env
  *
  * Auth: Vercel Cron sends `Authorization: Bearer <CRON_SECRET>` automatically
  * when CRON_SECRET is set. A `?secret=` query param is accepted for manual runs.
  */
+
+/** Set to true when on Vercel Pro and vercel.json crons are restored. */
+const CRON_REMINDERS_ENABLED = false;
 
 const REMINDER_WINDOW_HOURS = Number(process.env.REMINDER_WINDOW_HOURS ?? 48);
 
@@ -40,6 +47,17 @@ function authorized(request: Request): boolean {
 }
 
 export async function GET(request: Request) {
+  if (!CRON_REMINDERS_ENABLED) {
+    return NextResponse.json(
+      {
+        ok: false,
+        message:
+          "Reminder cron is disabled (Vercel Hobby). Restore vercel.cron.example.json on Pro.",
+      },
+      { status: 503 }
+    );
+  }
+
   if (!authorized(request)) {
     return NextResponse.json({ ok: false, message: "Unauthorized" }, { status: 401 });
   }
