@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
+import BookNowLink from "@/components/BookNowLink";
 import { Sparkle } from "@/components/icons";
 import { LOCATIONS, SITE } from "@/lib/content";
 
@@ -18,6 +19,9 @@ export default function Locations() {
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink-soft">
           Three convenient clinics, one standard of care. Walk-ins welcome, parking on site.
         </p>
+        <div className="mt-7 flex justify-center">
+          <BookNowLink />
+        </div>
       </Reveal>
 
       <div className="mt-12 grid gap-6 sm:grid-cols-3">

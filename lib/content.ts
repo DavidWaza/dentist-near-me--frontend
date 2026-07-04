@@ -3,6 +3,12 @@ export const SITE = {
   phone: "+234 (81) 6567-8901",
   email: "dentistnearmeng@gmail.com",
   hours: { weekdays: "Mon – Fri · 9:00 – 17:00", weekend: "Sat – Sun · 5:00 – 17:30" },
+  social: {
+    facebook: "https://www.facebook.com/dentistnearme",
+    instagram: "https://www.instagram.com/dentistnearme",
+    tiktok: "https://www.tiktok.com/@dentistnearme",
+    x: "https://x.com/dentistnearme",
+  },
 } as const;
 
 export const STATS = [
@@ -195,20 +201,20 @@ export const TESTIMONIALS = [
 
 export const LOCATIONS = [
   {
-    city: "Maitama, Abuja",
-    line: "12 Aguiyi Ironsi Street, Maitama",
+    city: "Mabushi, Abuja",
+    line: "Capital Hub Plaza, Mabushi, Abuja",
     image:
       "https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=900&q=70",
   },
   {
-    city: "Wuse, Abuja",
-    line: "45 Aminu Kano Crescent, Wuse II",
+    city: "Location soon in Abuja",
+    line: "unknown",
     image:
       "https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=70",
   },
   {
-    city: "Garki, Abuja",
-    line: "8 Julius Nyerere Crescent, Garki",
+    city: "Lokoja, Kogi",
+    line: " 6, Dr. E.B Animoku street, High level community, Lokoja, Kogi state",
     image:
       "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=900&q=70",
   },

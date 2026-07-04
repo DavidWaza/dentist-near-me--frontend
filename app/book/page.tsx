@@ -23,7 +23,8 @@ export default function BookPage({ searchParams }: BookPageProps) {
             </h1>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink-soft">
               Three quick steps and you&apos;re booked. We&apos;ll match you with the right
-              specialist and show their available times.
+              specialist and show their available times. Appointments that run past closing may
+              incur an overtime convenience fee.
             </p>
           </div>
           <div className="mt-10 min-w-0">

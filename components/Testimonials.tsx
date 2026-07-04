@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import BookNowLink from "@/components/BookNowLink";
 import { Sparkle } from "@/components/icons";
 import { TESTIMONIALS } from "@/lib/content";
 
@@ -80,6 +81,10 @@ export default function Testimonials() {
                 }`}
               />
             ))}
+          </div>
+
+          <div className="mt-7 flex justify-center">
+            <BookNowLink variant="light" />
           </div>
         </div>
       </div>

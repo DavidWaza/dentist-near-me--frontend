@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import BookNowLink from "@/components/BookNowLink";
 import { ArrowUpRight, ClockIcon, MailIcon, PhoneIcon } from "@/components/icons";
 import { SITE } from "@/lib/content";
 
@@ -63,12 +64,7 @@ export default function Hero() {
           </motion.p>
 
           <motion.div {...rise(0.4)} className="mt-7">
-            <Link href="/book" className="btn-pill-light">
-              Book Appointment
-              <span className="arrow-badge">
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </span>
-            </Link>
+            <BookNowLink variant="light" />
           </motion.div>
 
           {/* Info bar */}

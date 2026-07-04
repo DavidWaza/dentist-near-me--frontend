@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "@/components/Reveal";
+import BookNowLink from "@/components/BookNowLink";
 import { Sparkle } from "@/components/icons";
 import { WHY_US, SITE } from "@/lib/content";
 
@@ -23,6 +24,9 @@ export default function WhyUs() {
           At {SITE.name}, we combine expertise, compassion, and modern technology to create a
           dental experience that patients truly value.
         </p>
+        <div className="mt-7">
+          <BookNowLink />
+        </div>
       </Reveal>
 
       <div className="mt-12 grid items-start gap-10 lg:grid-cols-[1.1fr_0.9fr]">

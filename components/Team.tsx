@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import BookNowLink from "@/components/BookNowLink";
 import { ArrowUpRight, Sparkle } from "@/components/icons";
 import { DOCTORS } from "@/lib/content";
 
@@ -56,12 +57,7 @@ export default function Team() {
         </div>
 
         <Reveal delay={0.2} className="mt-10 text-center">
-          <Link href="/book" className="btn-pill">
-            View All Doctors
-            <span className="arrow-badge">
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          </Link>
+          <BookNowLink />
         </Reveal>
       </div>
     </section>

@@ -2,9 +2,17 @@
 
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import { ArrowUpRight, Sparkle } from "@/components/icons";
+import { FacebookIcon, InstagramIcon, Sparkle, TikTokIcon, XIcon } from "@/components/icons";
+import BookNowLink from "@/components/BookNowLink";
 import Logo from "@/components/Logo";
 import { SITE } from "@/lib/content";
+
+const SOCIAL_LINKS = [
+  { label: "Facebook", href: SITE.social.facebook, Icon: FacebookIcon },
+  { label: "Instagram", href: SITE.social.instagram, Icon: InstagramIcon },
+  { label: "TikTok", href: SITE.social.tiktok, Icon: TikTokIcon },
+  { label: "X", href: SITE.social.x, Icon: XIcon },
+] as const;
 
 const FOOTER_COLUMNS = [
   {
@@ -28,7 +36,7 @@ const FOOTER_COLUMNS = [
   {
     heading: "Support",
     links: [
-      { label: "Book Appointment", href: "/book" },
+      { label: "Book Now", href: "/book" },
       { label: "Emergency Care", href: `tel:${SITE.phone.replace(/[^+\d]/g, "")}` },
       { label: "Privacy Policy", href: "/" },
       { label: "Terms of Use", href: "/" },
@@ -52,12 +60,7 @@ export default function Footer() {
             Our friendly team is ready to answer your questions and get you booked in.
           </p>
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <Link href="/book" className="btn-pill-light">
-              Book Appointment
-              <span className="arrow-badge">
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </span>
-            </Link>
+            <BookNowLink variant="light" />
             <a
               href={`mailto:${SITE.email}`}
               className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-3 text-sm font-semibold transition-colors hover:bg-white/10"
@@ -83,6 +86,24 @@ export default function Footer() {
               <div className="mt-5 space-y-1 text-sm font-semibold">
                 <p>{SITE.phone}</p>
                 <p>{SITE.email}</p>
+              </div>
+              <div className="mt-5">
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-soft">Follow us</p>
+                <ul className="mt-3 flex flex-wrap gap-2.5" aria-label="Social media">
+                  {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+                    <li key={label}>
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${SITE.name} on ${label}`}
+                        className="grid h-10 w-10 place-items-center rounded-full bg-deep text-white transition-transform hover:-translate-y-0.5 hover:bg-deep-700"
+                      >
+                        <Icon className="h-4 w-4" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 

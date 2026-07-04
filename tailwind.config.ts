@@ -1,12 +1,8 @@
 import type { Config } from "tailwindcss";
 
 /**
- * DentistNearMe — accessible darker blues derived from brand palette
- * (#3BAEE0 · #2897CC · #1A7BAF), tuned for WCAG contrast on light backgrounds.
- *
- * bright #3BAEE0 → teal-light only (highlights on dark panels, not body text)
- * mid    #2897CC → gradients & deep-600
- * deep   #1A7BAF → accents; darker steps for surfaces & headlines
+ * DentistNearMe brand palette — primary #61BDFF with accessible darker steps
+ * for text, nav, and surfaces (same hue family throughout).
  */
 const config: Config = {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
@@ -14,20 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         deep: {
-          DEFAULT: "#0F4563",
-          800: "#0C3549",
-          700: "#124E6F",
-          600: "#1A7BAF",
+          DEFAULT: "#0F3D5C",
+          800: "#0A3048",
+          700: "#144563",
+          600: "#2680C0",
         },
         teal: {
-          DEFAULT: "#155F85",
-          dark: "#124E6F",
-          light: "#5BAFD4",
+          DEFAULT: "#2680C0",
+          dark: "#1A6599",
+          light: "#61BDFF",
         },
-        mint: { DEFAULT: "#E2EEF4", light: "#EDF4F8" },
+        mint: { DEFAULT: "#E3F4FD", light: "#F0F9FF" },
         cream: { DEFAULT: "#F7F1E8", dark: "#EFE6D8" },
         peach: { DEFAULT: "#FBEFE2" },
-        ink: { DEFAULT: "#0C3549", soft: "#3A6578" },
+        ink: { DEFAULT: "#0A3048", soft: "#4A7898" },
       },
       fontFamily: {
         sans: ["'Plus Jakarta Sans'", "system-ui", "sans-serif"],
@@ -36,14 +32,14 @@ const config: Config = {
         blob: "1.75rem",
       },
       boxShadow: {
-        card: "0 10px 40px -12px rgba(12, 53, 73, 0.2)",
-        pill: "0 6px 20px -6px rgba(12, 53, 73, 0.38)",
+        card: "0 10px 40px -12px rgba(15, 61, 92, 0.2)",
+        pill: "0 6px 20px -6px rgba(15, 61, 92, 0.38)",
       },
       backgroundImage: {
         "hero-gradient":
-          "linear-gradient(140deg, #1A7BAF 0%, #124E6F 50%, #0C3549 100%)",
+          "linear-gradient(140deg, #3DABF5 0%, #2680C0 45%, #0F3D5C 100%)",
         "panel-gradient":
-          "linear-gradient(155deg, #2897CC 0%, #1A7BAF 45%, #124E6F 100%)",
+          "linear-gradient(155deg, #61BDFF 0%, #4DAEF8 35%, #2680C0 70%, #1A6599 100%)",
       },
     },
   },

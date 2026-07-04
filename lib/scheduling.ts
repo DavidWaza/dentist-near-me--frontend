@@ -65,6 +65,47 @@ export function formatSlotLabel(time: string): string {
   return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
 }
 
+/**
+ * Clinic closing time as minutes from midnight (local).
+ * Mon–Fri 17:00 · Sat–Sun 17:30 — matches SITE.hours and getSlotsForDay.
+ */
+export function getClosingMinutes(day: DayOption): number {
+  return day.isWeekend ? 17 * 60 + 30 : 17 * 60;
+}
+
+function parseTimeToMinutes(time: string): number {
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function minutesToTimeString(minutes: number): string {
+  const h = Math.floor(minutes / 60);
+  const m = minutes % 60;
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+}
+
+/** When an appointment ends, in local minutes from midnight. */
+export function getAppointmentEndMinutes(startTime: string, durationMinutes: number): number {
+  return parseTimeToMinutes(startTime) + durationMinutes;
+}
+
+/** True when the full service duration runs past standard clinic closing. */
+export function extendsPastClosing(
+  day: DayOption,
+  startTime: string,
+  durationMinutes: number
+): boolean {
+  return getAppointmentEndMinutes(startTime, durationMinutes) > getClosingMinutes(day);
+}
+
+export function formatClosingTime(day: DayOption): string {
+  return formatSlotLabel(minutesToTimeString(getClosingMinutes(day)));
+}
+
+export function formatAppointmentEndTime(startTime: string, durationMinutes: number): string {
+  return formatSlotLabel(minutesToTimeString(getAppointmentEndMinutes(startTime, durationMinutes)));
+}
+
 /** Map of yyyy-mm-dd → HH:mm slots already booked for a dentist. */
 export type BookedSlotsByDay = Record<string, string[]>;
 

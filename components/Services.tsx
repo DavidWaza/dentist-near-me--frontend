@@ -3,11 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
+import BookNowLink, { bookServiceHref } from "@/components/BookNowLink";
 import { ArrowUpRight, Sparkle } from "@/components/icons";
 import { SERVICES, SITE, type Service } from "@/lib/content";
 
 const SURFACES: Record<Service["surface"], string> = {
-  lavender: "bg-[#E2EEF4]",
+  lavender: "bg-[#E3F4FD]",
   peach: "bg-peach",
   mint: "bg-mint-light",
   cream: "bg-cream",
@@ -30,20 +31,16 @@ export default function Services() {
           </p>
         </Reveal>
         <Reveal delay={0.15}>
-          <Link href="/book" className="btn-pill">
-            See All Services
-            <span className="arrow-badge">
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          </Link>
+          <BookNowLink />
         </Reveal>
       </div>
 
       <div className="mt-12 grid gap-6 lg:grid-cols-2">
         {SERVICES.map((service, index) => (
           <Reveal key={service.slug} delay={(index % 2) * 0.12}>
-            <article
-              className={`flex h-full flex-col gap-6 rounded-blob p-7 sm:flex-row sm:p-8 ${SURFACES[service.surface]}`}
+            <Link
+              href={bookServiceHref(service.slug)}
+              className={`group flex h-full flex-col gap-6 rounded-blob p-7 transition-all hover:ring-2 hover:ring-teal/30 sm:flex-row sm:p-8 ${SURFACES[service.surface]}`}
             >
               <div className="flex flex-1 flex-col">
                 <span className="font-mono text-xl font-semibold tracking-tight text-ink/70">
@@ -51,15 +48,12 @@ export default function Services() {
                 </span>
                 <h3 className="mt-auto pt-10 text-xl font-bold">{service.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.copy}</p>
-                <Link
-                  href={{ pathname: "/book", query: { service: service.slug } }}
-                  className="btn-pill-light mt-5 w-fit !py-2.5 ring-1 ring-deep/10"
-                >
-                  View Details
+                <span className="btn-pill-light mt-5 inline-flex w-fit !py-2.5 ring-1 ring-deep/10 transition-transform group-hover:-translate-y-0.5">
+                  Book Now
                   <span className="arrow-badge">
                     <ArrowUpRight className="h-3.5 w-3.5" />
                   </span>
-                </Link>
+                </span>
               </div>
 
               <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:w-64 lg:w-72">
@@ -68,7 +62,7 @@ export default function Services() {
                   alt={service.title}
                   fill
                   sizes="(max-width: 640px) 100vw, 288px"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-x-3 bottom-3 flex flex-wrap gap-1.5">
                   {service.tags.map((tag) => (
@@ -81,7 +75,7 @@ export default function Services() {
                   ))}
                 </div>
               </div>
-            </article>
+            </Link>
           </Reveal>
         ))}
       </div>

@@ -104,11 +104,12 @@ const esc = (s: string): string =>
 /* HTML building blocks (inline styles — required by email clients)    */
 /* ------------------------------------------------------------------ */
 
-const TEAL = "#155F85";
-const DEEP = "#124E6F";
-const MINT = "#EDF4F8";
-const INK_SOFT = "#3A6578";
-const BRAND_GRADIENT = "linear-gradient(155deg, #2897CC 0%, #1A7BAF 45%, #124E6F 100%)";
+const TEAL = "#2680C0";
+const DEEP = "#1A6599";
+const MINT = "#F0F9FF";
+const INK_SOFT = "#4A7898";
+const BRAND_GRADIENT =
+  "linear-gradient(155deg, #61BDFF 0%, #4DAEF8 35%, #2680C0 70%, #1A6599 100%)";
 
 function layout(opts: { preheader: string; heading: string; body: string }): string {
   return `<!DOCTYPE html>
@@ -122,16 +123,16 @@ function layout(opts: { preheader: string; heading: string; body: string }): str
   <span style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(opts.preheader)}</span>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${MINT};padding:32px 12px;">
     <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(12,53,73,0.1);">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:24px;overflow:hidden;box-shadow:0 10px 40px rgba(15,61,92,0.1);">
         <tr><td style="background:${BRAND_GRADIENT};padding:28px 32px;">
           <span style="font-size:20px;font-weight:700;color:#ffffff;letter-spacing:-0.02em;">${esc(SITE.name)}</span>
-          <span style="float:right;font-size:12px;color:#B8D9EA;padding-top:6px;">Dental Care</span>
+          <span style="float:right;font-size:12px;color:#C5E8FF;padding-top:6px;">Dental Care</span>
         </td></tr>
         <tr><td style="padding:32px;">
           <h1 style="margin:0 0 8px;font-size:22px;line-height:1.3;color:${DEEP};">${esc(opts.heading)}</h1>
           ${opts.body}
         </td></tr>
-        <tr><td style="padding:20px 32px;background:#EDF4F8;border-top:1px solid #C8DDE8;">
+        <tr><td style="padding:20px 32px;background:#F0F9FF;border-top:1px solid #C5E8FF;">
           <p style="margin:0;font-size:12px;color:${INK_SOFT};line-height:1.6;">
             ${esc(SITE.name)} · ${esc(SITE.phone)} · ${esc(SITE.email)}<br/>
             You're receiving this because an appointment was booked with this email address.

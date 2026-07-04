@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Reveal from "@/components/Reveal";
+import BookNowLink from "@/components/BookNowLink";
 import { Sparkle } from "@/components/icons";
 import { STATS } from "@/lib/content";
 
@@ -17,6 +18,9 @@ export default function StoryStats() {
           Redefining Dental Care with Trust, Innovation in{" "}
           <span className="text-teal">Dental Wellness</span>
         </h2>
+        <div className="mt-7 flex justify-center">
+          <BookNowLink />
+        </div>
       </Reveal>
 
       {/* Horizontally scrollable stat cards, edge-to-edge like the mock */}

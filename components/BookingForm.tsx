@@ -8,6 +8,9 @@ import { ArrowUpRight, Sparkle } from "@/components/icons";
 import { getSpecialistForService, LOCATIONS, SERVICES, type Doctor } from "@/lib/content";
 import {
   dayHasAvailability,
+  extendsPastClosing,
+  formatAppointmentEndTime,
+  formatClosingTime,
   formatSlotLabel,
   getAvailableSlots,
   getUpcomingDays,
@@ -16,8 +19,17 @@ import {
   type DayOption,
 } from "@/lib/scheduling";
 import { bookAppointment, fetchAvailability } from "@/lib/supabase";
+import OvertimeDisclaimer from "@/components/OvertimeDisclaimer";
 
 const STEPS = ["Service", "Date & Time", "Your Details"] as const;
+
+function isValidServiceSlug(slug?: string): slug is string {
+  return Boolean(slug && SERVICES.some((s) => s.slug === slug));
+}
+
+function initialStepForService(slug?: string): number {
+  return isValidServiceSlug(slug) ? 1 : 0;
+}
 
 interface BookingFormProps {
   initialService?: string;
@@ -40,7 +52,7 @@ export default function BookingForm({ initialService }: BookingFormProps) {
   const reduceMotion = useReducedMotion();
   const days = useMemo(() => getUpcomingDays(14), []);
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(() => initialStepForService(initialService));
   const [service, setService] = useState(
     () => SERVICES.find((s) => s.slug === initialService)?.slug ?? ""
   );
@@ -60,6 +72,7 @@ export default function BookingForm({ initialService }: BookingFormProps) {
   const [availabilityStatus, setAvailabilityStatus] = useState<"idle" | "loading" | "ready">(
     "idle"
   );
+  const [overtimeAcknowledged, setOvertimeAcknowledged] = useState(false);
 
   const selectedService = SERVICES.find((s) => s.slug === service);
   const clinicLocation = useMemo(
@@ -71,6 +84,11 @@ export default function BookingForm({ initialService }: BookingFormProps) {
     () => (day ? getAvailableSlots(day, bookedSlots) : []),
     [day, bookedSlots]
   );
+
+  const overtimeApplies = useMemo(() => {
+    if (!day || !time || !selectedService) return false;
+    return extendsPastClosing(day, time, selectedService.durationMinutes);
+  }, [day, time, selectedService]);
 
   useEffect(() => {
     if (step !== 1 || !service) return;
@@ -104,6 +122,10 @@ export default function BookingForm({ initialService }: BookingFormProps) {
   }, [step, service, days]);
 
   useEffect(() => {
+    setOvertimeAcknowledged(false);
+  }, [day?.iso, time, service]);
+
+  useEffect(() => {
     if (!day || !time) return;
     if (!getAvailableSlots(day, bookedSlots).includes(time)) {
       setTime("");
@@ -129,9 +151,13 @@ export default function BookingForm({ initialService }: BookingFormProps) {
     (step === 0 && service !== "" && assignedSpecialist !== null) ||
     (step === 1 && day !== null && time !== "");
 
+  const canSubmit =
+    submit.status !== "submitting" && (!overtimeApplies || overtimeAcknowledged);
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!day || !time || !selectedService || !assignedSpecialist) return;
+    if (overtimeApplies && !overtimeAcknowledged) return;
 
     setSubmit({ status: "submitting" });
     const result = await bookAppointment({
@@ -266,6 +292,11 @@ export default function BookingForm({ initialService }: BookingFormProps) {
           {step === 1 && (
             <motion.fieldset key="datetime" {...stepMotion} className="min-w-0 overflow-hidden">
               <legend className="text-xl font-bold">Choose date &amp; time</legend>
+              {selectedService && (
+                <p className="mt-2 text-sm text-ink-soft">
+                  {selectedService.title} · {selectedService.durationMinutes} min
+                </p>
+              )}
 
               {assignedSpecialist ? (
                 <div className="mt-4 flex items-center gap-4 rounded-2xl border border-teal/20 bg-mint-light p-4">
@@ -345,23 +376,44 @@ export default function BookingForm({ initialService }: BookingFormProps) {
                     Loading available times…
                   </p>
                 ) : slots.length > 0 ? (
-                  <div className="mt-5 grid w-full min-w-0 grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
-                    {slots.map((slot) => (
-                      <button
-                        key={slot}
-                        type="button"
-                        onClick={() => setTime(slot)}
-                        aria-pressed={time === slot}
-                        className={`min-w-0 rounded-xl border px-1 py-2.5 text-xs font-semibold transition-all ${
-                          time === slot
-                            ? "border-teal bg-mint-light ring-2 ring-teal/40"
-                            : "border-deep/10 hover:border-teal/50"
-                        }`}
-                      >
-                        {formatSlotLabel(slot)}
-                      </button>
-                    ))}
-                  </div>
+                  <>
+                    <div className="mt-5 grid w-full min-w-0 grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-5">
+                      {slots.map((slot) => {
+                        const slotHasOvertime =
+                          selectedService &&
+                          extendsPastClosing(day, slot, selectedService.durationMinutes);
+
+                        return (
+                          <button
+                            key={slot}
+                            type="button"
+                            onClick={() => setTime(slot)}
+                            aria-pressed={time === slot}
+                            className={`min-w-0 rounded-xl border px-1 py-2.5 text-xs font-semibold transition-all ${
+                              time === slot
+                                ? "border-teal bg-mint-light ring-2 ring-teal/40"
+                                : slotHasOvertime
+                                  ? "border-amber-300/80 bg-amber-50/80 hover:border-amber-400"
+                                  : "border-deep/10 hover:border-teal/50"
+                            }`}
+                          >
+                            {formatSlotLabel(slot)}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {overtimeApplies && selectedService && day && time && (
+                      <div className="mt-4">
+                        <OvertimeDisclaimer
+                          serviceTitle={selectedService.title}
+                          durationMinutes={selectedService.durationMinutes}
+                          startLabel={formatSlotLabel(time)}
+                          endLabel={formatAppointmentEndTime(time, selectedService.durationMinutes)}
+                          closingLabel={formatClosingTime(day)}
+                        />
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <p className="mt-5 rounded-xl bg-mint-light px-4 py-3 text-sm text-ink-soft">
                     No times left on this day — please pick another date.
@@ -439,6 +491,21 @@ export default function BookingForm({ initialService }: BookingFormProps) {
                 </p>
               </div>
 
+              {overtimeApplies && selectedService && day && time && (
+                <div className="mt-5">
+                  <OvertimeDisclaimer
+                    serviceTitle={selectedService.title}
+                    durationMinutes={selectedService.durationMinutes}
+                    startLabel={formatSlotLabel(time)}
+                    endLabel={formatAppointmentEndTime(time, selectedService.durationMinutes)}
+                    closingLabel={formatClosingTime(day)}
+                    showAcknowledgment
+                    acknowledged={overtimeAcknowledged}
+                    onAcknowledgeChange={setOvertimeAcknowledged}
+                  />
+                </div>
+              )}
+
               {submit.status === "error" && (
                 <p role="alert" className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
                   {submit.message}
@@ -474,8 +541,8 @@ export default function BookingForm({ initialService }: BookingFormProps) {
           ) : (
             <button
               type="submit"
-              disabled={submit.status === "submitting"}
-              className="btn-pill disabled:cursor-wait disabled:opacity-60"
+              disabled={!canSubmit}
+              className="btn-pill disabled:cursor-not-allowed disabled:opacity-40"
             >
               {submit.status === "submitting" ? "Booking…" : "Confirm Booking"}
               <span className="arrow-badge">
