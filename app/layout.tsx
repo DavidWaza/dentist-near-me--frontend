@@ -1,15 +1,17 @@
 import type { Metadata, Viewport } from "next";
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import { home } from "@/content/home";
+import { site } from "@/content/site";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "DentistNearMe — Trusted Dental Care for Every Generation",
-    template: "%s · DentistNearMe",
+    default: home.seo.title,
+    template: `%s · ${site.name}`,
   },
-  description:
-    "DentistNearMe combines modern technology with heartfelt service — preventive, cosmetic, restorative and pediatric dentistry with easy online booking.",
-  keywords: ["dentist", "dental care", "appointment booking", "DentistNearMe"],
+  description: home.seo.description,
+  keywords: ["dentist", "dental care", "appointment booking", site.name],
 };
 
 export const viewport: Viewport = {
@@ -29,8 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/dentist-near-me-logo.png" type="image/png" />
       </head>
       <body>
-        <Navbar />
+        <Navbar links={site.nav} bookCta={site.bookCta} logoAlt={site.logoAlt} />
         {children}
+        <Footer site={site} />
       </body>
     </html>
   );

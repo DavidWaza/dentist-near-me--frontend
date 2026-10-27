@@ -7,17 +7,19 @@ interface LogoProps {
   /** Dark backing for light surfaces (logo text is white). */
   onLight?: boolean;
   priority?: boolean;
+  alt: string;
 }
 
 export default function Logo({
   className = "h-10 w-auto",
   onLight = false,
   priority,
+  alt,
 }: LogoProps) {
   const image = (
     <Image
       src={LOGO_SRC}
-      alt="Dentist Near Me"
+      alt={alt}
       width={160}
       height={120}
       priority={priority}

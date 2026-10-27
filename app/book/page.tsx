@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import BookingForm from "@/components/BookingForm";
-import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Book an Appointment",
@@ -32,7 +31,6 @@ export default function BookPage({ searchParams }: BookPageProps) {
           </div>
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

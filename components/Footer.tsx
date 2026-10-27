@@ -2,133 +2,125 @@
 
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import { FacebookIcon, InstagramIcon, Sparkle, TikTokIcon, XIcon } from "@/components/icons";
-import BookNowLink from "@/components/BookNowLink";
+import {
+  ClockIcon,
+  FacebookIcon,
+  InstagramIcon,
+  MailIcon,
+  MapPinIcon,
+  PhoneIcon,
+  TikTokIcon,
+  XIcon,
+} from "@/components/icons";
 import Logo from "@/components/Logo";
-import { SITE } from "@/lib/content";
+import type { SiteContent, SocialLink } from "@/content/types";
 
-const SOCIAL_LINKS = [
-  { label: "Facebook", href: SITE.social.facebook, Icon: FacebookIcon },
-  { label: "Instagram", href: SITE.social.instagram, Icon: InstagramIcon },
-  { label: "TikTok", href: SITE.social.tiktok, Icon: TikTokIcon },
-  { label: "X", href: SITE.social.x, Icon: XIcon },
-] as const;
+const SOCIAL_ICONS: Record<SocialLink["label"], typeof FacebookIcon> = {
+  Facebook: FacebookIcon,
+  Instagram: InstagramIcon,
+  TikTok: TikTokIcon,
+  X: XIcon,
+};
 
-const FOOTER_COLUMNS = [
-  {
-    heading: "Company",
-    links: [
-      { label: "About Us", href: "/#story" },
-      { label: "Our Team", href: "/#team" },
-      { label: "Testimonials", href: "/#testimonials" },
-      { label: "Locations", href: "/#locations" },
-    ],
-  },
-  {
-    heading: "Services",
-    links: [
-      { label: "Preventive", href: "/#services" },
-      { label: "Cosmetic", href: "/#services" },
-      { label: "Restorative", href: "/#services" },
-      { label: "Pediatric", href: "/#services" },
-    ],
-  },
-  {
-    heading: "Support",
-    links: [
-      { label: "Book Now", href: "/book" },
-      { label: "Emergency Care", href: `tel:${SITE.phone.replace(/[^+\d]/g, "")}` },
-      { label: "Privacy Policy", href: "/" },
-      { label: "Terms of Use", href: "/" },
-    ],
-  },
-] as const;
+const CONTACT_ICONS = { mail: MailIcon, "map-pin": MapPinIcon } as const;
 
-export default function Footer() {
+interface FooterProps {
+  site: SiteContent;
+}
+
+export default function Footer({ site }: FooterProps) {
+  const { footer } = site;
+
   return (
-    <footer id="contact" className="section-pad pb-10">
-      {/* CTA panel */}
-      <Reveal>
-        <div className="rounded-blob bg-panel-gradient p-8 text-center text-white shadow-card sm:p-12">
-          <span className="eyebrow-dark">
-            <Sparkle className="h-3 w-3 text-teal-light" /> Get In Touch
-          </span>
-          <h2 className="mx-auto mt-4 max-w-lg text-3xl font-bold tracking-tight sm:text-4xl">
-            Let&apos;s Talk Teeth — We&apos;re <span className="text-teal-light">Just a Smile Away</span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm text-white/70">
-            Our friendly team is ready to answer your questions and get you booked in.
-          </p>
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
-            <BookNowLink variant="light" />
-            <a
-              href={`mailto:${SITE.email}`}
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-3 text-sm font-semibold transition-colors hover:bg-white/10"
-            >
-              {SITE.email}
-            </a>
-          </div>
-        </div>
-      </Reveal>
-
-      {/* Cream footer card */}
+    <footer className="section-pad pb-10">
       <Reveal delay={0.1}>
         <div className="mt-6 rounded-blob bg-cream p-8 sm:p-10">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_2fr]">
             <div>
               <Link href="/" className="inline-flex">
-                <Logo onLight className="h-10 w-auto" />
+                <Logo onLight className="h-10 w-auto" alt={site.logoAlt} />
               </Link>
-              <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">
-                A warm, modern dental practice combining expertise, compassion and technology
-                to keep every generation smiling.
-              </p>
-              <div className="mt-5 space-y-1 text-sm font-semibold">
-                <p>{SITE.phone}</p>
-                <p>{SITE.email}</p>
-              </div>
+              <p className="mt-3 max-w-xs text-sm leading-relaxed text-ink-soft">{footer.description}</p>
               <div className="mt-5">
-                <p className="text-xs font-bold uppercase tracking-wide text-ink-soft">Follow us</p>
+                <p className="text-xs font-bold uppercase tracking-wide text-ink-soft">{footer.followHeading}</p>
                 <ul className="mt-3 flex flex-wrap gap-2.5" aria-label="Social media">
-                  {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-                    <li key={label}>
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${SITE.name} on ${label}`}
-                        className="grid h-10 w-10 place-items-center rounded-full bg-deep text-white transition-transform hover:-translate-y-0.5 hover:bg-deep-700"
-                      >
-                        <Icon className="h-4 w-4" />
-                      </a>
-                    </li>
-                  ))}
+                  {site.social.map(({ label, href }) => {
+                    const Icon = SOCIAL_ICONS[label];
+                    return (
+                      <li key={label}>
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${site.name} on ${label}`}
+                          className="grid h-10 w-10 place-items-center rounded-full bg-deep text-white transition-transform hover:-translate-y-0.5 hover:bg-deep-700"
+                        >
+                          <Icon className="h-4 w-4" />
+                        </a>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
 
-            <nav aria-label="Footer" className="grid grid-cols-2 gap-8 sm:grid-cols-3">
-              {FOOTER_COLUMNS.map((column) => (
-                <div key={column.heading}>
-                  <h3 className="text-sm font-bold">{column.heading}</h3>
-                  <ul className="mt-3 space-y-2 text-sm text-ink-soft">
-                    {column.links.map((link) => (
-                      <li key={link.label}>
-                        <Link href={link.href} className="transition-colors hover:text-deep">
-                          {link.label}
-                        </Link>
+            <div className="grid gap-8 sm:grid-cols-2">
+              <nav aria-labelledby="footer-quick-links">
+                <h2 id="footer-quick-links" className="text-sm font-bold">
+                  {footer.quickLinksHeading}
+                </h2>
+                <ul className="mt-3 space-y-2 text-sm text-ink-soft">
+                  {footer.quickLinks.map((link) => (
+                    <li key={link.label}>
+                      <Link href={link.href} className="transition-colors hover:text-deep">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+
+              <div>
+                <h2 className="text-sm font-bold">{footer.contactHeading}</h2>
+                <ul className="mt-3 space-y-3 text-sm text-ink-soft">
+                  {footer.contactLines.map((line) => {
+                    const Icon = CONTACT_ICONS[line.icon];
+                    return (
+                      <li key={line.label} className="flex gap-2.5">
+                        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-teal-dark" />
+                        <span className="min-w-0">
+                          <span className="font-semibold text-ink">{line.label}</span>{" "}
+                          {line.href ? (
+                            <a href={line.href} className="break-all transition-colors hover:text-deep">
+                              {line.value}
+                            </a>
+                          ) : (
+                            line.value
+                          )}
+                        </span>
                       </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </nav>
+                    );
+                  })}
+                  {/* Kept from the previous site; not in the document. */}
+                  <li className="flex gap-2.5 font-semibold text-ink">
+                    <PhoneIcon className="mt-0.5 h-4 w-4 shrink-0 text-teal-dark" />
+                    {site.phone}
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <div className="mt-10 flex flex-col gap-2 border-t border-deep/10 pt-5 text-xs text-ink-soft sm:flex-row sm:justify-between">
-            <p>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
-            <p>
-              {SITE.hours.weekdays} · {SITE.hours.weekend}
+          <div className="mt-10 border-t border-deep/10 pt-5">
+            <h2 className="text-sm font-bold">{footer.disclaimerHeading}</h2>
+            <p className="mt-2 text-xs leading-relaxed text-ink-soft">{footer.disclaimer}</p>
+          </div>
+
+          <div className="mt-5 flex flex-col gap-2 border-t border-deep/10 pt-5 text-xs text-ink-soft sm:flex-row sm:justify-between">
+            <p>{footer.copyright}</p>
+            <p className="flex items-center gap-1.5">
+              <ClockIcon className="h-3.5 w-3.5 shrink-0" />
+              {site.hours.weekdays} · {site.hours.weekend}
             </p>
           </div>
         </div>

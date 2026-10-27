@@ -1,84 +1,72 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import BookNowLink, { bookServiceHref } from "@/components/BookNowLink";
-import { ArrowUpRight, Sparkle } from "@/components/icons";
-import { SERVICES, SITE, type Service } from "@/lib/content";
+import { ArrowUpRight, ICONS } from "@/components/icons";
+import type { HomeContent } from "@/content/types";
 
-const SURFACES: Record<Service["surface"], string> = {
-  lavender: "bg-[#E3F4FD]",
-  peach: "bg-peach",
-  mint: "bg-mint-light",
-  cream: "bg-cream",
-};
+interface ServicesProps {
+  content: HomeContent["services"];
+}
 
-export default function Services() {
+/** Card surfaces cycle in the original order. */
+const SURFACES = ["bg-[#E3F4FD]", "bg-peach", "bg-mint-light", "bg-cream"] as const;
+
+export default function Services({ content }: ServicesProps) {
   return (
-    <section id="services" className="section-pad py-20 sm:py-24">
-      <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-        <Reveal>
-          <span className="eyebrow">
-            <Sparkle className="h-3 w-3 text-teal" /> Our Services
-          </span>
-          <h2 className="mt-4 max-w-md text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-tight">
-            Comprehensive Dental Care for <span className="text-teal">Every Smile</span>
-          </h2>
-          <p className="mt-3 max-w-sm text-sm leading-relaxed text-ink-soft">
-            At {SITE.name}, we combine expertise, compassion, and modern technology to create a
-            dental experience that patients truly value.
-          </p>
-        </Reveal>
-        <Reveal delay={0.15}>
-          <BookNowLink />
-        </Reveal>
-      </div>
+    <section id="services" aria-labelledby="services-heading" className="section-pad py-20 sm:py-24">
+      <Reveal>
+        <h2
+          id="services-heading"
+          className="max-w-md text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-tight"
+        >
+          {content.heading}
+        </h2>
+      </Reveal>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-2">
-        {SERVICES.map((service, index) => (
-          <Reveal key={service.slug} delay={(index % 2) * 0.12}>
-            <Link
-              href={bookServiceHref(service.slug)}
-              className={`group flex h-full flex-col gap-6 rounded-blob p-7 transition-all hover:ring-2 hover:ring-teal/30 sm:flex-row sm:p-8 ${SURFACES[service.surface]}`}
-            >
-              <div className="flex flex-1 flex-col">
-                <span className="font-mono text-xl font-semibold tracking-tight text-ink/70">
-                  {service.index}
-                </span>
-                <h3 className="mt-auto pt-10 text-xl font-bold">{service.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.copy}</p>
-                <span className="btn-pill-light mt-5 inline-flex w-fit !py-2.5 ring-1 ring-deep/10 transition-transform group-hover:-translate-y-0.5">
-                  Book Now
-                  <span className="arrow-badge">
-                    <ArrowUpRight className="h-3.5 w-3.5" />
-                  </span>
-                </span>
-              </div>
+      <ul className="mt-12 grid gap-6 lg:grid-cols-2">
+        {content.items.map((service, index) => {
+          const Icon = ICONS[service.icon];
+          return (
+            <li key={service.title} className="lg:[&:last-child:nth-child(odd)]:col-span-2">
+              <Reveal delay={(index % 2) * 0.12} className="h-full">
+                <Link
+                  href={service.cta.href}
+                  className={`group flex h-full flex-col gap-6 rounded-blob p-7 transition-all hover:ring-2 hover:ring-teal/30 sm:p-8 ${
+                    SURFACES[index % SURFACES.length]
+                  }`}
+                >
+                  <div className="flex flex-1 flex-col gap-6 sm:flex-row">
+                    <div className="flex flex-1 flex-col">
+                      <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white text-teal-dark shadow-card">
+                        <Icon className="h-6 w-6" />
+                      </span>
+                      <h3 className="mt-auto pt-8 text-xl font-bold">{service.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-ink-soft">{service.copy}</p>
+                    </div>
 
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl sm:w-64 lg:w-72">
-                <Image
-                  src={service.image}
-                  alt={service.title}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 288px"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-x-3 bottom-3 flex flex-wrap gap-1.5">
-                  {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-full bg-deep/75 px-2.5 py-1 text-[10px] font-semibold text-white backdrop-blur-sm"
-                    >
-                      {tag}
+                    <div className="relative aspect-[4/3] w-full shrink-0 overflow-hidden rounded-2xl sm:w-56 lg:w-60">
+                      <Image
+                        src={service.image.src}
+                        alt=""
+                        fill
+                        sizes="(max-width: 640px) calc(100vw - 96px), 240px"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+
+                  <span className="btn-pill-light w-full justify-between !py-2.5 ring-1 ring-deep/10 transition-transform group-hover:-translate-y-0.5">
+                    {service.cta.label}
+                    <span className="arrow-badge">
+                      <ArrowUpRight className="h-3.5 w-3.5" />
                     </span>
-                  ))}
-                </div>
-              </div>
-            </Link>
-          </Reveal>
-        ))}
-      </div>
+                  </span>
+                </Link>
+              </Reveal>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }

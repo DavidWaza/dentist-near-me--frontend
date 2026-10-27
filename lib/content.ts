@@ -1,8 +1,11 @@
+import { site } from "@/content/site";
+
+/** Booking and email data. Page copy lives in content/*.ts. */
 export const SITE = {
-  name: "DentistNearMe",
-  phone: "+234 (81) 6567-8901",
-  email: "dentistnearmeng@gmail.com",
-  hours: { weekdays: "Mon – Fri · 9:00 – 17:00", weekend: "Sat – Sun · 5:00 – 17:30" },
+  name: site.name,
+  phone: site.phone,
+  email: site.email,
+  hours: site.hours,
   social: {
     facebook: "https://www.facebook.com/dentistnearme",
     instagram: "https://www.instagram.com/dentistnearme",

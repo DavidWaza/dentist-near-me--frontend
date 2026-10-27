@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Reveal from "@/components/Reveal";
 import BookNowLink from "@/components/BookNowLink";
-import { Sparkle } from "@/components/icons";
+import { DentalIcon } from "@/components/icons";
 import { STATS } from "@/lib/content";
 
 export default function StoryStats() {
@@ -12,7 +12,7 @@ export default function StoryStats() {
     <section id="story" className="overflow-hidden py-20 sm:py-24">
       <Reveal className="section-pad text-center">
         <span className="eyebrow">
-          <Sparkle className="h-3 w-3 text-teal" /> Our Story
+          <DentalIcon className="h-3 w-3 text-teal" /> Our Story
         </span>
         <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-tight">
           Redefining Dental Care with Trust, Innovation in{" "}

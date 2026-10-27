@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Reveal from "@/components/Reveal";
 import BookNowLink from "@/components/BookNowLink";
-import { Sparkle } from "@/components/icons";
+import { DentalIcon } from "@/components/icons";
 import { LOCATIONS, SITE } from "@/lib/content";
 
 export default function Locations() {
@@ -11,7 +11,7 @@ export default function Locations() {
     <section id="locations" className="section-pad py-20 sm:py-24">
       <Reveal className="text-center">
         <span className="eyebrow">
-          <Sparkle className="h-3 w-3 text-teal" /> Locations
+          <DentalIcon className="h-3 w-3 text-teal" /> Locations
         </span>
         <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.6rem]">
           Where You Can <span className="text-teal">Find Us</span>

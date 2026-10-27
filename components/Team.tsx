@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import BookNowLink from "@/components/BookNowLink";
-import { ArrowUpRight, Sparkle } from "@/components/icons";
+import { ArrowUpRight, DentalIcon } from "@/components/icons";
 import { DOCTORS } from "@/lib/content";
 
 export default function Team() {
@@ -13,7 +13,7 @@ export default function Team() {
       <div className="section-pad">
         <Reveal className="text-center">
           <span className="eyebrow bg-white">
-            <Sparkle className="h-3 w-3 text-teal" /> Our Team
+            <DentalIcon className="h-3 w-3 text-teal" /> Our Team
           </span>
           <h2 className="mx-auto mt-4 max-w-md text-3xl font-bold tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-tight">
             Our <span className="text-teal">Experts</span> in Oral Health

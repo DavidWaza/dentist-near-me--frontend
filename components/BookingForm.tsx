@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Sparkle } from "@/components/icons";
+import { ArrowUpRight, CircleCheckIcon } from "@/components/icons";
 import { getSpecialistForService, LOCATIONS, SERVICES, type Doctor } from "@/lib/content";
 import {
   dayHasAvailability,
@@ -200,7 +200,7 @@ export default function BookingForm({ initialService }: BookingFormProps) {
         className="rounded-blob bg-panel-gradient p-8 text-center text-white shadow-card sm:p-12"
       >
         <span className="eyebrow-dark">
-          <Sparkle className="h-3 w-3 text-teal-light" /> Booking received
+          <CircleCheckIcon className="h-3.5 w-3.5 text-teal-light" /> Booking received
         </span>
         <h2 className="mt-4 text-3xl font-bold tracking-tight">
           See you soon, {details.name.split(" ")[0] || "friend"}!

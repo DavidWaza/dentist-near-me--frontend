@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import BookNowLink from "@/components/BookNowLink";
-import { Sparkle } from "@/components/icons";
+import { DentalIcon } from "@/components/icons";
 import { TESTIMONIALS } from "@/lib/content";
 
 const ROTATE_MS = 6000;
@@ -38,7 +38,7 @@ export default function Testimonials() {
       <div className="section-pad relative flex justify-center">
         <div className="w-full max-w-xl rounded-blob bg-panel-gradient p-7 text-center text-white shadow-card sm:p-10">
           <span className="eyebrow-dark">
-            <Sparkle className="h-3 w-3 text-teal-light" /> Testimonials
+            <DentalIcon className="h-3 w-3 text-teal-light" /> Testimonials
           </span>
           <h2 className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">
             Voices of <span className="text-teal-light">Trust and Care</span>
